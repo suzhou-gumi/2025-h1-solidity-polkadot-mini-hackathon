@@ -91,10 +91,21 @@ contract DividendToken is ERC20, Ownable {
         _addTokenHolder(to);
     }
 
-    // 重写_transfer函数以跟踪代币持有者
-    function _transfer(address sender, address recipient, uint256 amount) internal override {
-        super._transfer(sender, recipient, amount);
-        _addTokenHolder(recipient);
+    // Remove the _beforeTokenTransfer logic and implement a custom transfer function
+    function transfer(address recipient, uint256 amount) public override returns (bool) {
+        bool success = super.transfer(recipient, amount);
+        if (success) {
+            _addTokenHolder(recipient);
+        }
+        return success;
+    }
+
+    function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
+        bool success = super.transferFrom(sender, recipient, amount);
+        if (success) {
+            _addTokenHolder(recipient);
+        }
+        return success;
     }
 
     // 添加代币持有者到列表
