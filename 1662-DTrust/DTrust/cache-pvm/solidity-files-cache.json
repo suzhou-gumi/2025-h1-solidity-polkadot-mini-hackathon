@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/liruning/Desktop/polkdot_solidity_homework/DTust/contracts/ContractVerifier.sol": {
+    "/Users/liruning/Desktop/polkdot_solidity_homework/2025-h1-solidity-polkadot-mini-hackathon/1662-DTrust/DTrust/contracts/ContractVerifier.sol": {
       "lastModificationDate": 1746806262517,
       "contentHash": "49f2da27e991f97d615bfb41f252f0ec",
       "sourceName": "contracts/ContractVerifier.sol",
@@ -60,335 +60,7 @@
         "ContractVerifier"
       ]
     },
-    "/Users/liruning/Desktop/polkdot_solidity_homework/DTust/contracts/Lock.sol": {
-      "lastModificationDate": 1746261544928,
-      "contentHash": "7eee587c347fe6b1de50c96688cb9477",
-      "sourceName": "contracts/Lock.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "mode": "z",
-            "fallback_to_optimizing_for_size": true,
-            "runs": 400
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        },
-        "resolc": {
-          "version": "latest",
-          "compilerSource": "binary",
-          "settings": {
-            "optimizer": {
-              "enabled": true,
-              "mode": "z",
-              "fallback_to_optimizing_for_size": true,
-              "runs": 400
-            },
-            "evmVersion": "paris",
-            "compilerPath": "/Users/liruning/Desktop/polkdot_solidity_homework/2025-17-solidity-on-polkadot/homework-4/1662/hardhat_ts_project/revive/resolc-universal-apple-darwin",
-            "solcArgs": [
-              "--solc",
-              "/Users/liruning/Library/Python/3.9/bin/solc"
-            ],
-            "standardJson": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.28"
-      ],
-      "artifacts": [
-        "Lock"
-      ]
-    },
-    "/Users/liruning/Desktop/polkdot_solidity_homework/DTust/node_modules/@openzeppelin/contracts/access/AccessControl.sol": {
-      "lastModificationDate": 1746264432854,
-      "contentHash": "849b15469d8e2bd01b49e6c632e448e7",
-      "sourceName": "@openzeppelin/contracts/access/AccessControl.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 400
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        },
-        "resolc": {
-          "version": "latest",
-          "compilerSource": "binary",
-          "settings": {
-            "optimizer": {
-              "enabled": true,
-              "runs": 400
-            },
-            "evmVersion": "paris",
-            "compilerPath": "/Users/liruning/Desktop/polkdot_solidity_homework/2025-17-solidity-on-polkadot/homework-4/1662/hardhat_ts_project/revive/resolc-universal-apple-darwin",
-            "solcArgs": [
-              "--solc",
-              "/Users/liruning/Library/Python/3.9/bin/solc"
-            ],
-            "standardJson": true
-          }
-        }
-      },
-      "imports": [
-        "./IAccessControl.sol",
-        "../utils/Context.sol",
-        "../utils/introspection/ERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "AccessControl"
-      ]
-    },
-    "/Users/liruning/Desktop/polkdot_solidity_homework/DTust/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1746264432866,
-      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
-      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 400
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        },
-        "resolc": {
-          "version": "latest",
-          "compilerSource": "binary",
-          "settings": {
-            "optimizer": {
-              "enabled": true,
-              "runs": 400
-            },
-            "evmVersion": "paris",
-            "compilerPath": "/Users/liruning/Desktop/polkdot_solidity_homework/2025-17-solidity-on-polkadot/homework-4/1662/hardhat_ts_project/revive/resolc-universal-apple-darwin",
-            "solcArgs": [
-              "--solc",
-              "/Users/liruning/Library/Python/3.9/bin/solc"
-            ],
-            "standardJson": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Context"
-      ]
-    },
-    "/Users/liruning/Desktop/polkdot_solidity_homework/DTust/node_modules/@openzeppelin/contracts/access/IAccessControl.sol": {
-      "lastModificationDate": 1746264432924,
-      "contentHash": "80621031deacf7066ec81277f9b1463a",
-      "sourceName": "@openzeppelin/contracts/access/IAccessControl.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 400
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        },
-        "resolc": {
-          "version": "latest",
-          "compilerSource": "binary",
-          "settings": {
-            "optimizer": {
-              "enabled": true,
-              "runs": 400
-            },
-            "evmVersion": "paris",
-            "compilerPath": "/Users/liruning/Desktop/polkdot_solidity_homework/2025-17-solidity-on-polkadot/homework-4/1662/hardhat_ts_project/revive/resolc-universal-apple-darwin",
-            "solcArgs": [
-              "--solc",
-              "/Users/liruning/Library/Python/3.9/bin/solc"
-            ],
-            "standardJson": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IAccessControl"
-      ]
-    },
-    "/Users/liruning/Desktop/polkdot_solidity_homework/DTust/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
-      "lastModificationDate": 1746264432893,
-      "contentHash": "7c03c1e37c3dc24eafb76dc2b8a5c3a6",
-      "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 400
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        },
-        "resolc": {
-          "version": "latest",
-          "compilerSource": "binary",
-          "settings": {
-            "optimizer": {
-              "enabled": true,
-              "runs": 400
-            },
-            "evmVersion": "paris",
-            "compilerPath": "/Users/liruning/Desktop/polkdot_solidity_homework/2025-17-solidity-on-polkadot/homework-4/1662/hardhat_ts_project/revive/resolc-universal-apple-darwin",
-            "solcArgs": [
-              "--solc",
-              "/Users/liruning/Library/Python/3.9/bin/solc"
-            ],
-            "standardJson": true
-          }
-        }
-      },
-      "imports": [
-        "./IERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC165"
-      ]
-    },
-    "/Users/liruning/Desktop/polkdot_solidity_homework/DTust/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1746264432928,
-      "contentHash": "bf0119eb2a570f219729ff38b6cd1df8",
-      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 400
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        },
-        "resolc": {
-          "version": "latest",
-          "compilerSource": "binary",
-          "settings": {
-            "optimizer": {
-              "enabled": true,
-              "runs": 400
-            },
-            "evmVersion": "paris",
-            "compilerPath": "/Users/liruning/Desktop/polkdot_solidity_homework/2025-17-solidity-on-polkadot/homework-4/1662/hardhat_ts_project/revive/resolc-universal-apple-darwin",
-            "solcArgs": [
-              "--solc",
-              "/Users/liruning/Library/Python/3.9/bin/solc"
-            ],
-            "standardJson": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC165"
-      ]
-    },
-    "/Users/liruning/Desktop/polkdot_solidity_homework/DTust/contracts/interfaces/IContractVerifier.sol": {
+    "/Users/liruning/Desktop/polkdot_solidity_homework/2025-h1-solidity-polkadot-mini-hackathon/1662-DTrust/DTrust/contracts/interfaces/IContractVerifier.sol": {
       "lastModificationDate": 1746458844986,
       "contentHash": "ec1a51dfbeeb594cc1f982c86b7dc4bc",
       "sourceName": "contracts/interfaces/IContractVerifier.sol",
@@ -443,6 +115,63 @@
       ],
       "artifacts": [
         "IContractVerifier"
+      ]
+    },
+    "/Users/liruning/Desktop/polkdot_solidity_homework/2025-h1-solidity-polkadot-mini-hackathon/1662-DTrust/DTrust/contracts/Lock.sol": {
+      "lastModificationDate": 1746261544928,
+      "contentHash": "7eee587c347fe6b1de50c96688cb9477",
+      "sourceName": "contracts/Lock.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "mode": "z",
+            "fallback_to_optimizing_for_size": true,
+            "runs": 400
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        },
+        "resolc": {
+          "version": "latest",
+          "compilerSource": "binary",
+          "settings": {
+            "optimizer": {
+              "enabled": true,
+              "mode": "z",
+              "fallback_to_optimizing_for_size": true,
+              "runs": 400
+            },
+            "evmVersion": "paris",
+            "compilerPath": "/Users/liruning/Desktop/polkdot_solidity_homework/2025-17-solidity-on-polkadot/homework-4/1662/hardhat_ts_project/revive/resolc-universal-apple-darwin",
+            "solcArgs": [
+              "--solc",
+              "/Users/liruning/Library/Python/3.9/bin/solc"
+            ],
+            "standardJson": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lock"
       ]
     }
   }
