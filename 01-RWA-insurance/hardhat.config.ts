@@ -1,28 +1,28 @@
-import "@nomicfoundation/hardhat-toolbox"
+import "@nomicfoundation/hardhat-toolbox-viem"
 import "@nomicfoundation/hardhat-ignition"
 // import "@nomicfoundation/hardhat-foundry";
-
-// import "hardhat-resolc"
-import { config } from "dotenv"
+import "hardhat-resolc"
 import "./scripts/compile-revive"
 import { HardhatRuntimeEnvironment } from "hardhat/types";
+import type { HardhatUserConfig } from "hardhat/config";
+import { config } from "dotenv"
 config()
 
-const path = require("path");
-const solcPath = path.resolve(__dirname, "node_modules", "solc");
-require("hardhat/config").extendEnvironment((hre: HardhatRuntimeEnvironment) => {
-  hre.config.solidity.compilers[0].version = "0.8.29";
-  hre.config.solidity.compilers[0].settings = {
-    optimizer: {
-      enabled: true,
-      runs: 400,
-    },
-  };
-});
+// const path = require("path");
+// const solcPath = path.resolve(__dirname, "node_modules", "solc");
+// require("hardhat/config").extendEnvironment((hre: HardhatRuntimeEnvironment) => {
+//   hre.config.solidity.compilers[0].version = "0.8.29";
+//   hre.config.solidity.compilers[0].settings = {
+//     optimizer: {
+//       enabled: true,
+//       runs: 400,
+//     },
+//   };
+// });
 
 module.exports = {
   solidity: {
-    version: "0.8.29",
+    version: "0.8.20",
     settings: {
       optimizer: {
         enabled: true,
@@ -68,16 +68,16 @@ module.exports = {
   // },
 
   // Temporarily disable the `resolc` configuration
-  // resolc: {
-  //   compilerSource: "binary",
-  //   settings: {
-  //     optimizer: {
-  //       enabled: true,
-  //       runs: 400,
-  //     },
-  //     evmVersion: "istanbul",
-  //     compilerPath: "./node_modules/solc/soljson-v0.8.29+commit.e8b86d0f.js",
-  //     standardJson: true,
-  //   },
-  // },
+  resolc: {
+    compilerSource: "binary",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 400,
+      },
+      evmVersion: "istanbul",
+      compilerPath: "~/.cargo/bin/resolc --solc /usr/local/bin/solc",
+      standardJson: true,
+    },
+  },
 };

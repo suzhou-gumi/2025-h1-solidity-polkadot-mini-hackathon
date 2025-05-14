@@ -16,7 +16,7 @@ task("compile-revive", "Compiles a contract using Revive")
       },
     };
 
-    console.log(`Compiling contract ${contract} with Revive using solc version 0.8.29...`);
+    console.log(`Compiling contract ${contract} with Revive using solc version 0.8.28...`);
 
     try {
       const solc = require("solc");

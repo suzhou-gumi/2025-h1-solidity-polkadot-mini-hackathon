@@ -6,10 +6,13 @@
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
+    "@types/lru-cache": "^7.10.9",
     "@types/node": "^22.15.17",
     "hardhat": "^2.24.0",
     "hardhat-resolc": "^0.0.8",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "viem": "^2.29.2"
   }
 }
