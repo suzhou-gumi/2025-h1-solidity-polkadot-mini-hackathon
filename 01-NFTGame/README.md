@@ -55,3 +55,4 @@ npx hardhat ignition deploy ./ignition/modules/BattleModule.ts --network localNo
 ```
 
 ## 部署与交互过程中发现的问题
+部署过程中发现的问题均已提交到issue中
