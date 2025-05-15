@@ -56,3 +56,36 @@ npx hardhat ignition deploy ./ignition/modules/BattleModule.ts --network localNo
 
 ## 部署与交互过程中发现的问题
 部署过程中发现的问题均已提交到issue中
+
+## 部署信息截图
+使用hardhat-polkadot 部署合约在 Westend Assethub
+合约拥有者密钥：5fb92d6e98884f76de468fa3f6278f8807c48bebc13595d45af5bdc4da702133
+<img width="416" alt="image" src="https://github.com/user-attachments/assets/1cf2d72c-01d4-4303-83df-877b4002ce26" />
+<br>
+<img width="426" alt="image" src="https://github.com/user-attachments/assets/212bb69c-fc47-4dda-92d6-712cd0becaf5" />
+<br>
+<img width="507" alt="image" src="https://github.com/user-attachments/assets/f36b7411-3fa5-40a9-a12b-0ec7c77b24d9" />
+部署在本地node
+<img width="596" alt="image" src="https://github.com/user-attachments/assets/f6a51cc1-9ba0-4713-9b83-dee9dbfedf47" />
+
+## 测试
+部分测试调整后仍不能通过
+![image](https://github.com/user-attachments/assets/9874f38f-3b14-438a-9239-0dd40fdaacd8)
+
+## Demo
+由于使用Viem 连接到本地node遇到问题（已经提交Issues），故只能完成部分代码，进行部分展示：
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/67ad56f7-fd57-46d9-a1cf-f6b696040aa0" />
+<br>
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/b1fd4064-735e-4219-b57f-2d6b400d51ce" />
+<br>
+<img width="1308" alt="image" src="https://github.com/user-attachments/assets/4ed0f8eb-b76e-4428-aa42-e8811a34105a" />
+<br>
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/f7698f53-97aa-4327-ba09-3657d341c179" />
+<br>
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/f20bb52d-72c7-4606-8717-b3ad6fa04367" />
+<br>
+
+
+
+
+
