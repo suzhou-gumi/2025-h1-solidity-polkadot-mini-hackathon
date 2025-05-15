@@ -24,7 +24,7 @@ export const localChain = (url: string) => defineChain({
   testnet: true,
 })
 
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const PRIVATE_KEY = process.env.LOCAL_PRIV_KEY;
 if (!PRIVATE_KEY || !PRIVATE_KEY.startsWith("0x")) {
   throw new Error('PRIVATE_KEY is not defined or does not start with "0x". Please check your environment variables.');
 }
@@ -32,7 +32,7 @@ console.log(`Private key: ${PRIVATE_KEY}`);
 
 async function deploy(contractName: string, args: any[]) {
   // 读取 ABI 和字节码
-  const contractPath = path.join(__dirname, `../artifacts/contracts/${contractName}.sol/${contractName}.json`);
+  const contractPath = path.join(__dirname, `../artifacts-pvm/contracts/${contractName}.sol/${contractName}.json`);
   const contractData = fs.readFileSync(contractPath, 'utf8');
   const parsedData = JSON.parse(contractData);
 
@@ -78,8 +78,8 @@ async function deploy(contractName: string, args: any[]) {
   const contract = await client.deployContract({
     abi: abi,
     bytecode: bytecode,
-    args: [0]
-  })
+    args: [] // Removed constructor arguments as the ABI shows no inputs
+  });
   console.log('Contract deployment result:', contract);
 
   // 等待交易完成
@@ -89,7 +89,7 @@ async function deploy(contractName: string, args: any[]) {
 
 (async () => {
   try {
-    const address = await deploy('Storage', [0]);
+    const address = await deploy('DividendToken', [0]);
     console.log(`Contract deployed at address: ${address}`);
   } catch (e) {
     if (e instanceof Error) {
