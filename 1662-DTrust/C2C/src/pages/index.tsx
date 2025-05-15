@@ -63,7 +63,7 @@ const Index = ({ Component, pageProps }: AppProps) => {
     // 调用合约函数，例如 owner()
     const result = await client.readContract({
       address: CONTRACT_ADDRESS,
-      abi:abiOut,
+      abi: abiOut,
       functionName: "owner",
       args: [], // 如果函数有参数，填在这里
     });
@@ -71,17 +71,12 @@ const Index = ({ Component, pageProps }: AppProps) => {
     console.log("owner() 返回值:", result);
   };
 
-  const send = async () => {
+  const send = async (fileHash, contractId) => {
     const txHash = await walletClient.writeContract({
       address: contractAddress,
-      abi:abiOut,
+      abi: abiOut,
       functionName: "uploadContract",
-      args: [
-        6,
-        "0x9f5a730b9e7d11f3a30aadb61e3d1b4cf32ad8a8e3c0c4b62dfc0cdba385b3b2",
-        "6.0.0",
-        "NDA",
-      ],
+      args: [contractId, fileHash, "6.0.0", "NDA"],
     });
     console.log(`uploadContract 交易发送: ${txHash}`);
     const receipt = await client.waitForTransactionReceipt({
@@ -97,7 +92,24 @@ const Index = ({ Component, pageProps }: AppProps) => {
 
     // 生成一个简单的 contractId，实际应用中需要更可靠的方式
     const contractId = BigInt(Date.now());
-    send();
+    send(fileHash, contractId);
+  };
+  const isHashExists = async (fileHash) => {
+    // 6. 检查 hash 是否存在
+    const exists = await client.readContract({
+      address: contractAddress,
+      abi: abiOut,
+      functionName: "isHashExists",
+      args: [fileHash],
+    });
+    console.log(`🔍 Hash 是否存在: ${exists}`);
+  };
+  const verifyHashAndId = async (info) => {
+    // 读取文件并计算哈希
+    const file = info.file.originFileObj;
+    const fileBuffer = await file.arrayBuffer();
+    const fileHash = keccak256(toHex(fileBuffer));
+    isHashExists({ fileHash });
   };
   useEffect(() => {
     axios
@@ -144,6 +156,24 @@ const Index = ({ Component, pageProps }: AppProps) => {
       } else if (info.file.status === "error") {
         message.error(`${info.file.name} file upload failed.`);
         exportHashAndId(info);
+      }
+    },
+  };
+  const propsVerify: UploadProps = {
+    name: "file",
+    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    headers: {
+      authorization: "authorization-text",
+    },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+        verifyHashAndId(info);
       }
     },
   };
@@ -270,24 +300,22 @@ const Index = ({ Component, pageProps }: AppProps) => {
               >
                 <h2 className={styles["colored-title"]}>
                   <IconBeforeTitle className={styles["before-title"]} />
-                  Our Mission: Let’s brew
+                  合同校验
                   <br />
-                  our value together!
+                  together!
                 </h2>
                 <div className="desc">
-                  Bringing the world-class projects to C2N and making it
-                  <br />
-                  an innovative community is our mission! We believe the power
+                  Bringing the world-class projects to DTrust . We believe the power
                   <br />
                   of people working together towards a common value is what we
                   <br />
                   need to build in our community.
                 </div>
-                <Link href="/pools" passHref>
-                  <div className={styles["button"] + " button"}>
-                    More Projects
-                  </div>
-                </Link>
+                <Upload {...propsVerify}>
+                  <Button className={styles["button"] + " button"}>
+                  合同校验
+                  </Button>
+                </Upload>
               </Col>
               {isDesktopOrLaptop ? (
                 <Col
@@ -897,8 +925,8 @@ const Index = ({ Component, pageProps }: AppProps) => {
   return (
     <main className={"container " + styles["container"]}>
       {section1}
-      {/* {section2}
-      {section3}
+      {section2}
+      {/* {section3}
       {section4}
       {section5}
       {section6} */}
