@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @title GT - 游戏对战系统代币合约
  * @dev 继承自OpenZeppelin的ERC20和Ownable合约
  */
+//OpenZeppelin 的 ERC20 合约通过状态优先更新机制避免了重入风险
 contract GT is ERC20("Game Token", "GT"), Ownable(msg.sender) {
     /// @dev 构造函数，初始化代币名称和符号
     constructor() {
