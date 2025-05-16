@@ -40,10 +40,8 @@ export const TELEGRAM_BOT_ID = process.env.NEXT_PUBLIC_TG_BOT_ID;
 
 export const BASE_URL = "https://pancakeswap.finance";
 export const BASE_BSC_SCAN_URL = "https://bscscan.com";
-import abi from '/Users/liruning/Desktop/C2C/ContractVerifier.json';
-export const tokenAbi = abi.abi
-
-
+import { abi } from "../util/ContractVerifier.json";
+export const tokenAbi = abi
 export const tokenImage =
     "http://bobabrewery.oss-ap-southeast-1.aliyuncs.com/brewery_logo.jpg";
 

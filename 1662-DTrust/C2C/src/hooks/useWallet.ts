@@ -41,21 +41,6 @@ export function listenToWallet() {
 
   const { getLocal } = useLocalStorage();
 
-  useEffect(function mount() {
-    // auto connect to wallet iff user has connected
-    if (~~getLocal(connectorLocalStorageKey)) {
-      // getAccount({hideError: true});
-      // window.ethereum && window.ethereum.on('connect', (connectInfo: any) => {
-      //   getAccount({hideError: true});
-      // });
-
-    }
-    // getNetwork();
-    // window.ethereum && window.ethereum.on('accountsChanged', handleAccountsChanged);
-    // window.ethereum && window.ethereum.on('chainChanged', handleChainChanged);
-    // window.ethereum && window.ethereum.on('disconnect', disconnect);
-    // window.ethereum && window.ethereum.on('error', (res) => message.error('Transaction Error'));
-  }, []);
 
   useEffect(() => {
     handleAccountsChanged(account)
@@ -64,6 +49,8 @@ export function listenToWallet() {
   useEffect(() => {
     handleChainChanged(chainId);
   }, [chainId]);
+  
+  
 
   useEffect(() => {
     // if (!walletAddress || !chain) {
@@ -85,6 +72,7 @@ export function listenToWallet() {
       })();
     }
   }, [connector, walletAddress, chain])
+  
 
   useEffect(() => {
     if (!chain) {
@@ -171,9 +159,36 @@ export const useWallet = () => {
 
   const { getLocal, setLocal } = useLocalStorage();
 
+  useEffect(function mount() {
+    if (~~getLocal(connectorLocalStorageKey)) {
+      getAccount({hideError: true});
+      window.ethereum && window.ethereum.on('connect', (connectInfo: any) => {
+        getAccount({hideError: true});
+      });
+    }
+    
+    //getNetwork();
+    //window.ethereum && window.ethereum.on('accountsChanged');
+    //window.ethereum && window.ethereum.on('chainChanged');
+    //window.ethereum && window.ethereum.on('disconnect', disconnect);
+    //window.ethereum && window.ethereum.on('error', (res) => message.error('Transaction Error'));
+  }, []);
+
   /**
    * Init saleContract when saleAddress/userWalletAddress changes
    */
+  // 初始化 自动连接（重要）
+  useEffect(function mount() {
+    if (~~getLocal(connectorLocalStorageKey)) {
+      getAccount({hideError: true});
+      window.ethereum && window.ethereum.on('connect', (connectInfo: any) => {
+        getAccount({hideError: true});
+      });
+    }
+    // ... 其他事件监听（被注释掉了）...
+  }, []);
+
+
   useEffect(() => {
     if (!signer || !saleAddress) {
       return;
@@ -185,6 +200,7 @@ export const useWallet = () => {
   }, [saleAddress, signer])
 
 
+  // 在 getAccount 函数中
   async function getAccount(options?) {
     const hideError = options && options.hideError;
     const showError = !hideError;
@@ -203,10 +219,20 @@ export const useWallet = () => {
       })
       return Promise.reject();
     }
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    dispatch(contractActions.setWalletAddress(accounts[0]));
-
-    return Promise.resolve(accounts[0]);
+    try {
+      console.log("正在请求钱包地址...");
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      dispatch(contractActions.setWalletAddress(accounts[0]));
+      // 移除这行
+      // alert(accounts[0])
+      localStorage.setItem('walletAccount', accounts[0])
+      // 添加这行，统一存储键
+      localStorage.setItem(connectorLocalStorageKey, '1')
+      return Promise.resolve(accounts[0]);
+    } catch (error) {
+      console.error("获取钱包地址失败:", error);
+      return Promise.reject(error);
+    }
   }
 
   async function getNetwork() {
@@ -305,7 +331,8 @@ export const useWallet = () => {
           content: 'Welcome, you\'re currently connected to metamask',
           duration: 1
         });
-        // auto connect next time
+        // 同时设置两个键
+        setLocal(connectorLocalStorageKey, 1);
         setLocal('auto_connect_wallet', 1);
       });
     return Promise.resolve();
@@ -314,7 +341,9 @@ export const useWallet = () => {
   function disconnect() {
     dispatch(contractActions.setWalletAddress(null));
     // dispatch(walletActions.setChain(null));
-
+  
+    // 同时清除两个键
+    setLocal(connectorLocalStorageKey, 0);
     setLocal('auto_connect_wallet', 0);
     return Promise.resolve();
   }

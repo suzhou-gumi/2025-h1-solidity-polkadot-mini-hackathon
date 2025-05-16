@@ -33,28 +33,55 @@ import {
   http,
   keccak256,
   toHex,
+  defineChain,
+  custom,
 } from "viem";
 import { mainnet } from "viem/chains";
 import Image from "next/image";
 import { abi as abiOut } from "../util/ContractVerifier.json";
+import { useWallet } from "@src/hooks/useWallet";
+
 const CONTRACT_ADDRESS = "0x97e0c8f6643df31197fff71ced70f8288c187120";
 const RPC_URL = "https://westend-asset-hub-eth-rpc.polkadot.io";
 const contractAddress = "0x97e0c8f6643df31197fff71ced70f8288c187120"; // 合约地址
+
+const westendAssetHub = defineChain({
+  id:420420421, // ❗ 示例 Chain ID, 请替换为 Westend Asset Hub 的实际 Chain ID
+  name: 'Westend Asset Hub',
+  nativeCurrency: { name: 'Westend Dot', symbol: 'WND', decimals: 18 }, // ❗ 示例原生代币, 请核实并替换
+  rpcUrls: { 
+    default: { http: [RPC_URL] },
+    public: { http: [RPC_URL] },
+  },
+  // blockExplorers: { // 可选: 如果有区块浏览器
+  //   default: { name: 'ExplorerName', url: 'https://explorer.example.com' },
+  // },
+});
+
 // 创建公共客户端（只读）
 const client = createPublicClient({
   transport: http(RPC_URL),
 });
 
 // 假设这是你的钱包客户端
-const walletClient = createWalletClient({
-  chain: mainnet,
-  transport: http(RPC_URL),
-});
+//const walletClient = createWalletClient({
+//  account: '0x550FA69e0A7b61c2D3F34d4dEd7c1B3cE1327488',
+//  chain: westendAssetHub,
+//  transport: http(RPC_URL),
+//});
 
 const Index = ({ Component, pageProps }: AppProps) => {
   const [projectData, setProjectData] = useState([]);
   const [livePoolsData, setLivePoolsData] = useState([]);
   const [cardIndex, setCardIndex] = useState(1);
+  const { walletAddress } = useWallet();
+  
+  // 添加调试输出
+  useEffect(() => {
+    console.log("当前钱包地址:", walletAddress);
+  }, [walletAddress]);
+
+  
 
   const {} = useThirdParty();
   let { isDesktopOrLaptop, isTabletOrMobile } = useResponsive();
@@ -71,28 +98,59 @@ const Index = ({ Component, pageProps }: AppProps) => {
     console.log("owner() 返回值:", result);
   };
 
-  const send = async (fileHash, contractId) => {
+  const send = async (contractId,fileHash) => {
+    if (!walletAddress) {
+      message.error("请先连接钱包");
+      return;
+    }
+    // 使用 window.ethereum 作为 provider
+    const walletClient = createWalletClient({
+      account: walletAddress,
+      chain: westendAssetHub,
+      transport:
+        typeof window !== "undefined" && window.ethereum
+          ? custom(window.ethereum) // ✅ 包装成 transport 函数
+          : http(),
+    });
+
     const txHash = await walletClient.writeContract({
       address: contractAddress,
       abi: abiOut,
       functionName: "uploadContract",
-      args: [contractId, fileHash, "6.0.0", "NDA"],
+      args: [
+        contractId, 
+        fileHash, 
+        "6.0.0", 
+        "NDA",
+      ],
+      chain: westendAssetHub,
+      account: walletAddress,
     });
     console.log(`uploadContract 交易发送: ${txHash}`);
     const receipt = await client.waitForTransactionReceipt({
       hash: txHash,
     });
     console.log(`uploadContract 交易确认: 区块 ${receipt.blockNumber}`);
-  };
+};
   const exportHashAndId = async (info) => {
     // 读取文件并计算哈希
     const file = info.file.originFileObj;
     const fileBuffer = await file.arrayBuffer();
     const fileHash = keccak256(toHex(fileBuffer));
 
+     // 打印哈希值
+  console.log("上传文件的哈希值:", fileHash);
+  message.info(`文件哈希值: ${fileHash}`);
+
+    // 检查钱包是否已连接
+    if (!walletAddress) {
+      message.error("请先连接钱包！");
+      return;
+    }
+
     // 生成一个简单的 contractId，实际应用中需要更可靠的方式
     const contractId = BigInt(Date.now());
-    send(fileHash, contractId);
+    send(contractId,fileHash);
   };
   const isHashExists = async (fileHash) => {
     // 6. 检查 hash 是否存在
@@ -109,7 +167,7 @@ const Index = ({ Component, pageProps }: AppProps) => {
     const file = info.file.originFileObj;
     const fileBuffer = await file.arrayBuffer();
     const fileHash = keccak256(toHex(fileBuffer));
-    isHashExists({ fileHash });
+    isHashExists(fileHash);
   };
   useEffect(() => {
     axios
@@ -965,5 +1023,6 @@ const Index = ({ Component, pageProps }: AppProps) => {
     </main>
   );
 };
+
 
 export default Index;

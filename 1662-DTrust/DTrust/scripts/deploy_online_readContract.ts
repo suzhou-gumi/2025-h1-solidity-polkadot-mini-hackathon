@@ -58,7 +58,15 @@ async function main() {
     chain: westendAssetHub
   });
   console.log('assignUserRole() 交易哈希:', txHash);
-}
+
+  const exists = await client.readContract({
+    address: CONTRACT_ADDRESS,
+    abi,
+    functionName: 'isHashExists',
+    args: ['0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'],
+  });
+  console.log(`🔍 Hash 是否存在: ${exists}`);
+  }
 
 main().catch((err) => {
   console.error('调用失败:', err);
