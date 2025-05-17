@@ -65,11 +65,28 @@ async function deployToAssetHub(contractName: string) {
   console.log('Balance (WND):', balance)
 
   // 获取 nonce
-  const nonce = await publicClient.getTransactionCount({ address })
+  // const nonce = await publicClient.getTransactionCount({ address })
+  const nonce = await publicClient.getTransactionCount({ 
+    address,
+    blockTag: "pending" // 获取最新 nonce（包括 pending 交易）
+  });
+  
   console.log('Nonce:', nonce)
 
   // 手动设定一个较高的 gas limit（适用于 PolkaVM）
-//   const gasLimit = 30_000_000n // PolkaVM 上合约部署需要较高 gas
+  const gasLimit = 30_000_000n // PolkaVM 上合约部署需要较高 gas
+  // 尝试获取链的当前 Gas 上限
+  const block = await publicClient.getBlock();
+  console.log('Block gas limit:', block.gasLimit);
+
+  // 调整 gasLimit 不超过区块上限
+  // const gasLimit = block.gasLimit * 80n / 100n; // 使用 80% 的区块上限
+
+  const gasPrice = await publicClient.getGasPrice();
+  console.log('Current gas price:', gasPrice);
+
+  const gasRequired = gasLimit * gasPrice;
+  console.log('Gas required:', gasRequired);
 
 //   try {
 //     // 直接部署合约
