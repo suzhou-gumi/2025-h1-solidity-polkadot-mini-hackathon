@@ -13,7 +13,7 @@ ParkView
 
 我们正在开发一款基于区块链技术的去中心化应用（DAPP），旨在实现停车位的智能化租赁管理。
 - contracts: 区块链智能合约
-- hardhat: 区块链开发环境配置及测试文件（test）
+- hardhat: 区块链开发环境配置
 - server 前端代码。
 
 ## features
