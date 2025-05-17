@@ -49,10 +49,10 @@ module.exports = {
       url: "http://127.0.0.1:8545",
       accounts: [process.env.LOCAL_PRIV_KEY],
     },
-    // ah: {
-    //   url: "https://westend-asset-hub-eth-rpc.polkadot.io",
-    //   accounts: [process.env.AH_PRIV_KEY],
-    // },
+    ah: {
+      url: "https://westend-asset-hub-eth-rpc.polkadot.io",
+      accounts: [process.env.AH_PRIV_KEY],
+    },
   },
   // using remix compiler
   // resolc: {
@@ -76,7 +76,8 @@ module.exports = {
         runs: 400,
       },
       evmVersion: "istanbul",
-      compilerPath: "~/.cargo/bin/resolc --solc /usr/local/bin/solc",
+      // compilerPath: "~/.cargo/bin/resolc --solc /usr/local/bin/solc",
+      compilerPath: "~/.cargo/bin/resolc",
       standardJson: true,
     },
   },

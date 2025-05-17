@@ -28,7 +28,7 @@ const PRIVATE_KEY = process.env.LOCAL_PRIV_KEY;
 if (!PRIVATE_KEY || !PRIVATE_KEY.startsWith("0x")) {
   throw new Error('PRIVATE_KEY is not defined or does not start with "0x". Please check your environment variables.');
 }
-console.log(`Private key: ${PRIVATE_KEY}`);
+// console.log(`Private key: ${PRIVATE_KEY}`);
 
 async function deploy(contractName: string, args: any[]) {
   // 读取 ABI 和字节码
@@ -45,7 +45,7 @@ async function deploy(contractName: string, args: any[]) {
   const abi = parsedData.abi;
 
   // console.log(`Bytecode: ${bytecode}`);
-  console.log(`ABI: ${JSON.stringify(abi)}`);
+  // console.log(`ABI: ${JSON.stringify(abi)}`);
 
   // 使用私钥创建钱包
   const wallet = privateKeyToAccount(PRIVATE_KEY as `0x${string}`);
