@@ -87,6 +87,17 @@ alan 1753
 ![部署记录1](https://pic1.imgdb.cn/item/682843de58cb8da5c8f8e271.png)
 ![部署记录2](https://pic1.imgdb.cn/item/6828442b58cb8da5c8f8e292.png)
 
+### 🐹 UI预览
+
+![create](https://pic1.imgdb.cn/item/680b1e9d58cb8da5c8ca9f3f.png)
+![list](https://pic1.imgdb.cn/item/680b1eec58cb8da5c8caa040.png)
+![detail](https://pic1.imgdb.cn/item/680b1f8658cb8da5c8caa3de.png)
+![vote](https://pic1.imgdb.cn/item/680b1f9d58cb8da5c8caa4ae.png)
+![admin](https://pic1.imgdb.cn/item/680b207658cb8da5c8caa740.png)
+![drawWinner](https://pic1.imgdb.cn/item/680b211058cb8da5c8caacfc.png)
+![claim](https://pic1.imgdb.cn/item/680b215558cb8da5c8caafbc.png)
+![profile](https://pic1.imgdb.cn/item/680b21ca58cb8da5c8cab059.png)
+
 ---
 
 ## 🧪 本地开发指南
