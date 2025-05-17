@@ -62,26 +62,20 @@ const westendAssetHub = defineChain({
 const client = createPublicClient({
   transport: http(RPC_URL),
 });
-
-// 假设这是你的钱包客户端
-//const walletClient = createWalletClient({
-//  account: '0x550FA69e0A7b61c2D3F34d4dEd7c1B3cE1327488',
-//  chain: westendAssetHub,
-//  transport: http(RPC_URL),
-//});
-
 const Index = ({ Component, pageProps }: AppProps) => {
   const [projectData, setProjectData] = useState([]);
   const [livePoolsData, setLivePoolsData] = useState([]);
   const [cardIndex, setCardIndex] = useState(1);
-  const { walletAddress } = useWallet();
+  const { walletAddress: reduxWalletAddress, connect } = useWallet();
+  const [walletAddress, setWalletAddress] = useState(reduxWalletAddress);
   
-  // 添加调试输出
+  // 当 Redux 中的钱包地址变化时，更新本地状态
   useEffect(() => {
-    console.log("当前钱包地址:", walletAddress);
-  }, [walletAddress]);
-
+    setWalletAddress(reduxWalletAddress);
+  }, [reduxWalletAddress]);
   
+
+
 
   const {} = useThirdParty();
   let { isDesktopOrLaptop, isTabletOrMobile } = useResponsive();
@@ -136,12 +130,13 @@ const Index = ({ Component, pageProps }: AppProps) => {
     // 读取文件并计算哈希
     const file = info.file.originFileObj;
     const fileBuffer = await file.arrayBuffer();
-    const fileHash = keccak256(toHex(fileBuffer));
+    // 正确转换为 Uint8Array 后再 toHex
+    const fileHash = keccak256(toHex(new Uint8Array(fileBuffer)));
 
      // 打印哈希值
   console.log("上传文件的哈希值:", fileHash);
   message.info(`文件哈希值: ${fileHash}`);
-
+  message.info(`钱包地址: ${walletAddress}`);
     // 检查钱包是否已连接
     if (!walletAddress) {
       message.error("请先连接钱包！");
@@ -161,12 +156,15 @@ const Index = ({ Component, pageProps }: AppProps) => {
       args: [fileHash],
     });
     console.log(`🔍 Hash 是否存在: ${exists}`);
+    alert(`文件哈希值: ${fileHash.slice(0, 10)}...${fileHash.slice(-8)}\n验证结果: ${exists ? '✅ 已存在于区块链中' : '❌ 不存在于区块链中'}`);
   };
+
   const verifyHashAndId = async (info) => {
     // 读取文件并计算哈希
     const file = info.file.originFileObj;
     const fileBuffer = await file.arrayBuffer();
-    const fileHash = keccak256(toHex(fileBuffer));
+    // 正确转换为 Uint8Array 后再 toHex
+    const fileHash = keccak256(toHex(new Uint8Array(fileBuffer)));
     isHashExists(fileHash);
   };
   useEffect(() => {
@@ -252,19 +250,19 @@ const Index = ({ Component, pageProps }: AppProps) => {
           <Row>
             <Col span={isDesktopOrLaptop ? 18 : 24}>
               <h1 className="title">
-                合同真实性验证平台
+                数据真实性验证平台
                 <br />
-                on Sepolia
+                on Dtrust
               </h1>
               <div className="desc">
                 点击按钮上传合同
                 <br />
-                offering the hottest and innovative projects in
-                <br />a fair, secure, and efficient way.
+                Click the button to upload the file.
+                <br />Generate a hash and upload it to the blockchain.
               </div>
               <Upload {...props}>
                 <Button className={styles["button"] + " button"}>
-                  Click to Upload
+                  文件上传
                 </Button>
               </Upload>
             </Col>
@@ -358,20 +356,20 @@ const Index = ({ Component, pageProps }: AppProps) => {
               >
                 <h2 className={styles["colored-title"]}>
                   <IconBeforeTitle className={styles["before-title"]} />
-                  合同校验
+                  文件校验
                   <br />
-                  together!
+                  Less Trust, More Truth!
                 </h2>
                 <div className="desc">
-                  Bringing the world-class projects to DTrust . We believe the power
+                  BMoving from trust-based systems to truth-based systems,
                   <br />
-                  of people working together towards a common value is what we
+                  where truth is enforced by code, data, and decentralized mechanisms
                   <br />
-                  need to build in our community.
+                  ather than assumptions of integrity.
                 </div>
                 <Upload {...propsVerify}>
                   <Button className={styles["button"] + " button"}>
-                  合同校验
+                  文件校验
                   </Button>
                 </Upload>
               </Col>

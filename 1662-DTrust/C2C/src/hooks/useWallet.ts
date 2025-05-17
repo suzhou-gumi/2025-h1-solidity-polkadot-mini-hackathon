@@ -28,7 +28,8 @@ import { connectorLocalStorageKey, walletLocalStorageKey } from '@src/types/Conn
 const validChains = VALID_CHAINS;
 
 function checkMetaMask() {
-  return window && window.ethereum && window.ethereum.isMetaMask;
+  // 添加更多检查，确保 window.ethereum 完全加载
+  return typeof window !== 'undefined' && window.ethereum && window.ethereum.isMetaMask;
 }
 
 export function listenToWallet() {
@@ -49,7 +50,6 @@ export function listenToWallet() {
   useEffect(() => {
     handleChainChanged(chainId);
   }, [chainId]);
-  
   
 
   useEffect(() => {
@@ -158,35 +158,59 @@ export const useWallet = () => {
   const [saleAddress, setSaleAddress] = useState('');
 
   const { getLocal, setLocal } = useLocalStorage();
-
+  // 初始化 自动连接（重要）
   useEffect(function mount() {
-    if (~~getLocal(connectorLocalStorageKey)) {
-      getAccount({hideError: true});
-      window.ethereum && window.ethereum.on('connect', (connectInfo: any) => {
-        getAccount({hideError: true});
-      });
-    }
-    
-    //getNetwork();
-    //window.ethereum && window.ethereum.on('accountsChanged');
-    //window.ethereum && window.ethereum.on('chainChanged');
-    //window.ethereum && window.ethereum.on('disconnect', disconnect);
-    //window.ethereum && window.ethereum.on('error', (res) => message.error('Transaction Error'));
+    // 添加延迟确保 MetaMask 完全加载
+    const timer = setTimeout(() => {
+      if (~~getLocal(connectorLocalStorageKey)) {
+        getAccount({hideError: true})
+          .catch(error => {
+            console.error("自动连接钱包失败:", error);
+            // 可能需要清除本地存储的连接状态
+            if (error.message.includes("User rejected")) {
+              setLocal(connectorLocalStorageKey, 0);
+            }
+          });
+        
+        // 添加所有必要的事件监听
+        if (window.ethereum) {
+          window.ethereum.on('connect', (connectInfo: any) => {
+            getAccount({hideError: true});
+          });
+          
+          window.ethereum.on('accountsChanged', (accounts: string[]) => {
+            if (accounts.length > 0) {
+              dispatch(contractActions.setWalletAddress(accounts[0]));
+            } else {
+              dispatch(contractActions.setWalletAddress(null));
+            }
+          });
+          
+          window.ethereum.on('chainChanged', (chainId: string) => {
+            getNetwork();
+          });
+          
+          window.ethereum.on('disconnect', () => {
+            disconnect();
+          });
+        }
+      }
+    }, 1000); // 给页面加载一些时间
+    // 清理函数
+    return () => {
+      clearTimeout(timer);
+      if (window.ethereum) {
+        window.ethereum.removeListener('connect', () => {});
+        window.ethereum.removeListener('accountsChanged', () => {});
+        window.ethereum.removeListener('chainChanged', () => {});
+        window.ethereum.removeListener('disconnect', () => {});
+      }
+    };
   }, []);
 
   /**
    * Init saleContract when saleAddress/userWalletAddress changes
    */
-  // 初始化 自动连接（重要）
-  useEffect(function mount() {
-    if (~~getLocal(connectorLocalStorageKey)) {
-      getAccount({hideError: true});
-      window.ethereum && window.ethereum.on('connect', (connectInfo: any) => {
-        getAccount({hideError: true});
-      });
-    }
-    // ... 其他事件监听（被注释掉了）...
-  }, []);
 
 
   useEffect(() => {
@@ -200,37 +224,64 @@ export const useWallet = () => {
   }, [saleAddress, signer])
 
 
-  // 在 getAccount 函数中
   async function getAccount(options?) {
     const hideError = options && options.hideError;
     const showError = !hideError;
-    if (!checkMetaMask()) {
-      showError && message.error({
-        content: 'Please install metamask!',
-      })
-      dispatch(walletActions.setisWalletInstalled(false));
-      return Promise.reject();
-    } else {
-      dispatch(walletActions.setisWalletInstalled(true));
-    }
-    if (!window.ethereum.isConnected()) {
-      showError && message.error({
-        content: 'Please connect to metamask!',
-      })
-      return Promise.reject();
-    }
+    
     try {
+      // 确保 window.ethereum 已完全加载
+      if (typeof window === 'undefined' || !window.ethereum) {
+        showError && message.error({
+          content: '请安装 MetaMask 钱包!',
+        });
+        dispatch(walletActions.setisWalletInstalled(false));
+        return Promise.reject(new Error('MetaMask 未安装'));
+      }
+      
+      // 等待一小段时间确保 MetaMask 完全初始化
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      if (!window.ethereum.isMetaMask) {
+        showError && message.error({
+          content: '请安装 MetaMask 钱包!',
+        });
+        dispatch(walletActions.setisWalletInstalled(false));
+        return Promise.reject(new Error('MetaMask 未安装'));
+      }
+      
+      dispatch(walletActions.setisWalletInstalled(true));
+      
+      if (!window.ethereum.isConnected()) {
+        showError && message.error({
+          content: '请连接到 MetaMask!',
+        });
+        return Promise.reject(new Error('MetaMask 未连接'));
+      }
+      
       console.log("正在请求钱包地址...");
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      dispatch(contractActions.setWalletAddress(accounts[0]));
-      // 移除这行
-      // alert(accounts[0])
-      localStorage.setItem('walletAccount', accounts[0])
-      // 添加这行，统一存储键
-      localStorage.setItem(connectorLocalStorageKey, '1')
-      return Promise.resolve(accounts[0]);
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      
+      if (accounts && accounts.length > 0) {
+        console.log("获取到钱包地址:", accounts[0]);
+        dispatch(contractActions.setWalletAddress(accounts[0]));
+        localStorage.setItem('walletAccount', accounts[0]);
+        localStorage.setItem(connectorLocalStorageKey, '1');
+        return Promise.resolve(accounts[0]);
+      } else {
+        throw new Error('未找到账户');
+      }
     } catch (error) {
       console.error("获取钱包地址失败:", error);
+      // 如果是用户拒绝连接，给出更友好的提示
+      if (error.code === 4001) {
+        showError && message.error({
+          content: '您拒绝了连接请求，请在 MetaMask 中批准连接',
+        });
+      } else {
+        showError && message.error({
+          content: `连接钱包失败: ${error.message}`,
+        });
+      }
       return Promise.reject(error);
     }
   }

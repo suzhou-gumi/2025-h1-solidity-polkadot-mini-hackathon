@@ -17,7 +17,7 @@ const westendAssetHub = defineChain({
   id:420420421, // ❗ 示例 Chain ID, 请替换为 Westend Asset Hub 的实际 Chain ID
   name: 'Westend Asset Hub',
   nativeCurrency: { name: 'Westend Dot', symbol: 'WND', decimals: 18 }, // ❗ 示例原生代币, 请核实并替换
-  rpcUrls: {
+  rpcUrls: { 
     default: { http: [RPC_URL] },
     public: { http: [RPC_URL] },
   },
