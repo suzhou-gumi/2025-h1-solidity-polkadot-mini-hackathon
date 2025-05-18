@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 Web3 Balloon Game 是一个基于区块链的在线对战游戏。玩家通过调整气球大小来竞争，最接近目标值的玩家获胜。游戏集成了智能合约和链上随机数，为玩家提供公平、透明的游戏体验。
-
+智能合约部分代码未完成
 ![游戏预览](public/preview.png)
 
 ## ✨ 特性
@@ -64,7 +64,7 @@ pnpm run setup-db
 
 4. 启动开发服务器：
 \`\`\`bash
-pnpm dev
+pnpm run dev
 \`\`\`
 
 现在您可以访问 http://localhost:3000 开始游戏了！
@@ -91,9 +91,6 @@ pnpm hardhat deploy --network sepolia
 6. 游戏结束时，最接近目标值的玩家获胜
 7. 获胜者获得所有质押的代币
 
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
 
 ## 📄 许可证
 
