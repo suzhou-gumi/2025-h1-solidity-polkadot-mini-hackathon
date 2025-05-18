@@ -266,6 +266,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({
     // 判断当前玩家是否已确认
     const hasCurrentPlayerConfirmed = currentPlayer.hasConfirmedStart;
 
+    
     return (
         <div className="space-y-6">
             {/* 游戏状态显示 */}

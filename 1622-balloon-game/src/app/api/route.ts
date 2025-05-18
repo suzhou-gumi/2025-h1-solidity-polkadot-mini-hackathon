@@ -2,7 +2,52 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { createGameRoom, getGameRoom, updateGameRoom, getAvailableRooms, deleteGameRoom } from '@/utils/dynamodb';
 import { GameRoom, GameStatus, Player } from '@/types/dynamodb';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { ethers } from 'ethers';
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../../contracts/contracts';
 
+// 从环境变量获取管理员私钥
+const ADMIN_PRIVATE_KEY = process.env.ADMIN_PRIVATE_KEY;
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // 只允许POST请求
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: '只允许POST请求' });
+  }
+
+  try {
+    const { gameId, winner } = req.body;
+
+    if (!gameId || !winner) {
+      return res.status(400).json({ error: '缺少必要参数' });
+    }
+
+    if (!ADMIN_PRIVATE_KEY) {
+      return res.status(500).json({ error: '管理员私钥未配置' });
+    }
+
+    // 创建RPC提供者和管理员钱包
+    const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
+    const adminWallet = new ethers.Wallet(ADMIN_PRIVATE_KEY, provider);
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, adminWallet);
+
+    // 调用合约结束游戏
+    const tx = await contract.endGame(gameId, winner);
+    const receipt = await tx.wait();
+
+    return res.status(200).json({
+      success: true,
+      message: '游戏结果已提交到合约',
+      txHash: receipt.transactionHash
+    });
+  } catch (error: any) {
+    console.error('提交游戏结果失败:', error);
+    return res.status(500).json({
+      error: '提交游戏结果失败',
+      message: error.message
+    });
+  }
+}
 // --- 智能合约交互相关函数 ---
 async function initiateSmartContractVrfRangeRequest(roomId: string): Promise<string> {
   const vrfRequestId = `vrf_range_req_${roomId}_${Date.now()}`;

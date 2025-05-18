@@ -8,6 +8,80 @@ import { GameLobby } from "../components/game/GameLobby";
 import { GameRoom } from "../components/game/GameRoom";
 import type { GameRoom as GameRoomType } from '../components/game/types';
 import { useGameContext } from '../components/game/GameContext';
+import { ethers } from 'ethers';
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../contracts/contracts';
+
+// 创建游戏
+export async function createGame(gameId: string) {
+  try {
+    if (!window.ethereum) throw new Error("需要安装MetaMask钱包");
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+    const stakeAmount = ethers.utils.parseEther("0.01");
+
+    const tx = await contract.createGame(gameId, { value: stakeAmount });
+    const receipt = await tx.wait();
+
+    console.log("游戏创建成功:", receipt);
+    return { success: true, txHash: receipt.transactionHash };
+  } catch (error) {
+    console.error("创建游戏失败:", error);
+    return { success: false, error: error instanceof Error ? error.message : "未知错误" };
+  }
+}
+
+// 加入游戏
+export async function joinGame(gameId: string) {
+  try {
+    if (!window.ethereum) throw new Error("需要安装MetaMask钱包");
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+    const stakeAmount = ethers.utils.parseEther("0.01");
+
+    const tx = await contract.joinGame(gameId, { value: stakeAmount });
+    const receipt = await tx.wait();
+
+    console.log("加入游戏成功:", receipt);
+    return { success: true, txHash: receipt.transactionHash };
+  } catch (error) {
+    console.error("加入游戏失败:", error);
+    return { success: false, error: error instanceof Error ? error.message : "未知错误" };
+  }
+}
+
+// 游戏结束时调用此函数
+async function submitGameResult(gameId: string, winner: string) {
+  try {
+    const response = await fetch("/api/game-result", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        gameId,
+        winner // 传递获胜者的钱包地址
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "提交结果失败");
+    }
+
+    console.log("游戏结果已提交:", result);
+    return result;
+  } catch (error) {
+    console.error("提交游戏结果错误:", error);
+    throw error;
+  }
+}
 
 const InnerPage: NextPage = () => {
   const { address: playerAddress, isConnected } = useAccount();
@@ -69,19 +143,44 @@ const InnerPage: NextPage = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
 
-  // Game Actions
   const handleCreateGame = async (stakeAmount: number) => {
-    if (!playerAddress) return;
-    const roomId = generateRoomId();
-    const room = await apiRequest("/api", "POST", {
-      action: "createRoom",
-      playerAddress,
-      stakeAmount,
-      roomId,
-    });
-    if (room) {
-      setGameRoom(room);
-      setGameMessage("房间创建成功！");
+    if (!playerAddress) {
+      setGameMessage("请先连接钱包");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setGameMessage("正在创建房间，请在钱包中确认交易...");
+
+      // 生成房间ID
+      const roomId = generateRoomId();
+
+      // 调用合约创建游戏并支付ETH
+      const contractResult = await createGame(roomId);
+
+      if (!contractResult.success) {
+        throw new Error(`合约交互失败: ${contractResult.error}`);
+      }
+
+      // 合约交互成功后，创建房间
+      const room = await apiRequest("/api", "POST", {
+        action: "createRoom",
+        playerAddress,
+        stakeAmount,
+        roomId,
+        txHash: contractResult.txHash  // 传递交易哈希
+      });
+
+      if (room) {
+        setGameRoom(room);
+        setGameMessage("房间创建成功！质押已锁定在合约中");
+      }
+    } catch (error: any) {
+      setGameMessage(`创建房间失败: ${error.message || "未知错误"}`);
+      console.error('Create game error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -90,9 +189,19 @@ const InnerPage: NextPage = () => {
       setGameMessage("请先连接钱包");
       return;
     }
+
     try {
       setIsLoading(true);
-      setGameMessage("正在加入房间...");
+      setGameMessage("正在加入房间，请在钱包中确认交易...");
+
+      // 调用合约加入游戏并支付ETH
+      const contractResult = await joinGame(roomId);
+
+      if (!contractResult.success) {
+        throw new Error(`合约交互失败: ${contractResult.error}`);
+      }
+
+      // 合约交互成功后，加入房间
       const response = await fetch("/api", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -100,16 +209,16 @@ const InnerPage: NextPage = () => {
           action: "joinRoom",
           roomId,
           playerAddress,
+          txHash: contractResult.txHash  // 传递交易哈希
         })
       });
+
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || '加入房间失败');
       }
 
       console.log('加入房间返回数据:', data);
-      console.log('房间状态:', data.status);
-      console.log('玩家类型: 挑战者');
 
       // 确保房间状态正确
       if (data && data.roomId) {
@@ -121,7 +230,7 @@ const InnerPage: NextPage = () => {
 
         // 设置房间数据
         setGameRoom(updatedRoom);
-        setGameMessage("成功加入房间！请确认开始游戏");
+        setGameMessage("成功加入房间！质押已锁定在合约中");
 
         // 立即发送一次状态更新请求以确保同步
         setTimeout(async () => {
@@ -133,7 +242,8 @@ const InnerPage: NextPage = () => {
         }, 500);
       }
     } catch (error: any) {
-      setGameMessage(error.message || '加入房间失败，请重试');
+      setGameMessage(`加入房间失败: ${error.message || "未知错误"}`);
+      console.error('Join game error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -211,6 +321,19 @@ const InnerPage: NextPage = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       {/* 只在大厅/等待/准备阶段显示顶部信息栏 */}
+      {/* ... 保持原有UI ... */}
+
+      {/* {txPending && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+              <p className="mt-4 text-lg">处理链上交易中...</p>
+              <p className="mt-2 text-sm text-gray-500">请在钱包中确认交易</p>
+            </div>
+          </div>
+        </div>
+      )} */}
       {(!gameRoom || ['waiting', 'readyToStart'].includes(gameRoom.status)) && (
         <header className="flex justify-between items-center mb-8 pb-4 border-b">
           <h1 className="text-4xl font-bold">
