@@ -38,8 +38,8 @@ module.exports = {
       accounts: [process.env.LOCAL_PRIV_KEY],
     },
     ah: {
-      url: "https://westend-asset-hub-rpc.polkadot.io",
-      chainId: 10081, // Westend AssetHub chain ID
+      url: "https://westend-asset-hub-eth-rpc.polkadot.io",
+      chainId: 420420421, // Westend AssetHub chain ID
       accounts: [process.env.AH_PRIV_KEY],
     },
   },

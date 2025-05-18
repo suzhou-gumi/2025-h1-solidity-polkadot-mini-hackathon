@@ -1,4 +1,4 @@
-import { createPublicClient, createWalletClient, defineChain, http, formatUnits } from "viem"
+import { createPublicClient, createWalletClient, defineChain, http, webSocket, formatUnits, parseEther, parseGwei } from "viem"
 import { privateKeyToAccount } from "viem/accounts"
 
 import { config } from "dotenv"
@@ -9,7 +9,7 @@ config()
 
 // 定义Westend AssetHub链
 export const westendAssetHub = defineChain({
-  id: 10081,
+  id: 420420421,
   name: 'Westend AssetHub',
   network: 'westend-asset-hub',
   nativeCurrency: {
@@ -19,10 +19,10 @@ export const westendAssetHub = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://westend-asset-hub-rpc.polkadot.io'],
+      http: ['https://westend-asset-hub-eth-rpc.polkadot.io'],
     },
     public: {
-      http: ['https://westend-asset-hub-rpc.polkadot.io'],
+      http: ['https://westend-asset-hub-eth-rpc.polkadot.io'],
     },
   },
   testnet: true,
@@ -61,7 +61,7 @@ async function deployToAssetHub(contractName: string): Promise<{
 
   // 验证链配置
   const chainId = westendAssetHub.id
-  const expectedRpcUrl = process.env.RPC_URL || 'https://westend-asset-hub-rpc.polkadot.io'
+  const expectedRpcUrl = process.env.RPC_URL || 'https://westend-asset-hub-eth-rpc.polkadot.io'
   
   console.log(`🔗 Network Configuration:
   - Expected Chain: Westend AssetHub
@@ -69,37 +69,61 @@ async function deployToAssetHub(contractName: string): Promise<{
   - RPC Endpoint: ${expectedRpcUrl}`)
 
   // 创建带有链验证的客户端
-  const ethRpcUrl = 'https://westend-asset-hub-rpc.polkadot.io'
+  const ethRpcUrl = 'https://westend-asset-hub-eth-rpc.polkadot.io'
   
-  // 强制使用正确的链配置
+  // 使用正确的链配置
   const chainConfig = {
     ...westendAssetHub,
-    id: 10081, // 强制设置链ID
+    id: chainId,
     rpcUrls: {
-      default: { http: [ethRpcUrl] },
-      public: { http: [ethRpcUrl] }
+      default: { 
+        webSocket: [ethRpcUrl],
+        http: ['https://westend-asset-hub-eth-rpc.polkadot.io'] 
+      },
+      public: { 
+        webSocket: [ethRpcUrl],
+        http: ['https://westend-asset-hub-eth-rpc.polkadot.io']
+      }
     }
   }
 
   // 创建客户端
   const client = createWalletClient({
     account: wallet,
-    transport: http(ethRpcUrl),
+    transport: http(ethRpcUrl), // 暂时回退到HTTP
     chain: chainConfig,
   })
   
   const publicClient = createPublicClient({
-    transport: http(ethRpcUrl),
+    transport: http(ethRpcUrl), // 暂时回退到HTTP
     chain: chainConfig,
   })
 
   // 强制验证链ID
   const networkChainId = await publicClient.getChainId()
-  if (networkChainId !== 10081) {
+  console.log(`ℹ️ Connected to chain ${networkChainId} via ${ethRpcUrl}`)
+  console.log(`ℹ️ Using account: ${address}`)
+  
+  if (networkChainId !== 420420421) {
     throw new Error(
       `🚨 Chain ID verification failed!\n` +
       `Connected to chain ${networkChainId} via ${ethRpcUrl}\n` +
-      `Expected chain ID: 10081 (Westend AssetHub)`
+      `Expected chain ID: 420420421 (Westend AssetHub)`
+    )
+  }
+
+  // 验证账户状态
+  try {
+    const balance = await publicClient.getBalance({ 
+      address: address,
+      blockTag: 'latest'
+    })
+    console.log(`ℹ️ Account balance: ${formatUnits(balance, 18)} WND`)
+  } catch (error) {
+    console.error('⚠️ Account access error:', error)
+    throw new Error(
+      `🚨 Failed to access account ${address}\n` +
+      `Check RPC connection and account configuration`
     )
   }
 
@@ -136,7 +160,7 @@ async function deployToAssetHub(contractName: string): Promise<{
 
   // Westend AssetHub 网络特定参数
   const NETWORK_GAS = {
-    minGasPrice: 100_000_000n, // 100 gwei 最低gas价格
+    minGasPrice: parseGwei('1'), // 提高最低gas价格到1 gwei
     defaultGasLimit: 30_000_000n // 默认gas limit
   }
 
@@ -174,15 +198,37 @@ async function deployToAssetHub(contractName: string): Promise<{
   }
   
   try {
-    // 直接部署合约
-    txHash = await client.deployContract({
-      abi,
-      bytecode,
-      args: [],
+    // 先测试简单转账交易
+    try {
+      const testTxHash = await client.sendTransaction({
+        to: address, // 给自己转账
+        value: parseEther("0.0001"), // 增加测试交易金额
+        gas: 21000n,
+        gasPrice: parseGwei("1"), // 提高gas price到1 gwei
+        nonce,
+        chain: chainConfig,
+        account: wallet
+      })
+      console.log(`ℹ️ Test transaction sent: ${testTxHash}`)
+    } catch (testError) {
+      console.error('⚠️ Test transaction failed:', testError)
+      throw new Error(
+        `🚨 Failed to send test transaction\n` +
+        `This indicates the RPC endpoint may not fully support EVM transactions\n` +
+        `Try using alternative RPC endpoint: wss://westend-asset-hub-rpc.polkadot.io`
+      )
+    }
+
+    // 部署合约
+    txHash = await client.sendTransaction({
+      data: `0x${bytecode}`,
       gas: gasLimit,
-      gasPrice: adjustedGasPrice,
-      nonce,
-      account: address
+      gasPrice: parseGwei('1'), // 提高gas price到1 gwei
+      nonce: nonce + 1, // 递增nonce
+      to: undefined,
+      value: 0n,
+      chain: chainConfig,
+      account: wallet
     })
     console.log('✅ Transaction submitted. Hash:', txHash)
 
@@ -275,7 +321,7 @@ async function deployToAssetHub(contractName: string): Promise<{
 
     console.error('\n🛠️ Recommended Actions:')
     console.error('1. Verify RPC endpoint configuration (must be Westend AssetHub)')
-    console.error('2. Check network chain ID matches (expected: 10081)')
+    console.error('2. Check network chain ID matches (expected: 420420421)')
     console.error('3. Review account balance and gas parameters')
     console.error('4. Validate contract compilation artifacts')
 
