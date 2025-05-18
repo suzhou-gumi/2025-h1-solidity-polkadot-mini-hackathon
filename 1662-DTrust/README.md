@@ -44,8 +44,10 @@ As global data compliance tightens and localization rules grow stricter, DTrust 
 ### 4. 第四步：上传文件hash并请求asset hub，文件hash上链
    ![image](https://github.com/user-attachments/assets/b844c563-a7fc-49f1-9edb-9d29705ad1c7)
 
-### 5. 第五步：验证文件上链
+### 5. 第五步：验证文件上链（并验证成功）
    ![image](https://github.com/user-attachments/assets/31e81cfd-6b00-412c-8b60-6df722eab1b8)
+   ![image](https://github.com/user-attachments/assets/0437df05-ea31-47a3-8978-dc74a086a27d)
+
 
 ## 五、详细介绍：
 
