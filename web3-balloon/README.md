@@ -1,5 +1,7 @@
 # Web3 Balloon Game 🎈
 
+智能合约部分代码未完成
+
 [![Next.js](https://img.shields.io/badge/Next.js-13.0-black)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-18.0-blue)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
@@ -7,7 +9,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 Web3 Balloon Game 是一个基于区块链的在线对战游戏。玩家通过调整气球大小来竞争，最接近目标值的玩家获胜。游戏集成了智能合约和链上随机数，为玩家提供公平、透明的游戏体验。
-智能合约部分代码未完成
+
 ![游戏预览](public/preview.png)
 
 ## ✨ 特性
