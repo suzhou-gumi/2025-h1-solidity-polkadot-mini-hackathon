@@ -1,13 +1,19 @@
 Author:Curtisyan江南易
+学号：1906
+GitHub:https://github.com/CurtisYan/blockchain-lottery
 前言：目前该项目只是做了个基础版的功能，完整版是作者的完整构思。以后该代码还会维护，联系方式在末尾。首次使用可以看看说明文件目录下单完整版功能说明，该项目还有很大潜力
+！！！功能说明在 /说明文件/基础版大纲 ！！！
+在线预览此 DAPP：https://lottery-app-ivory.vercel.app/
+演示视频：https://www.bilibili.com/video/BV146JAzHEUu/?share_source=copy_web&vd_source=1ef6bbd8ba59bed719b19befcbd89f5a
 
 测试网领水：https://faucet.moonbeam.network/
-
+ 部署的合约地址：0x84F045AB0F7Fe1278A1D2fb2E334409894A8E35D
+ 查询链接:https://moonbase.moonscan.io/address/0x84F045AB0F7Fe1278A1D2fb2E334409894A8E35D
 # 区块链去中心化抽奖平台
 
 基于区块链技术的公平、透明的抽奖系统，所有过程均在链上进行，无法篡改。本项目包含智能合约和前端应用两部分。（前端在 lottery-dapp 目录里）
 
-![抽奖平台截图](说明文件/img1.png)
+![抽奖平台截图](/img1.png)
 
 ## 功能特点
 
