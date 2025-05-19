@@ -1,0 +1,238 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+button{
+    width: 100px;
+    height: 40px;
+    padding: 4px 8px;
+    font-size: 18px;
+    text-align: center;
+    color: white;
+    background-color: rgb(80, 114, 251);
+    border: rgba(0, 0, 0, 0) 1px solid;
+    border-radius: 5px;
+
+}
+button:hover{
+    background-color: rgb(0, 0, 255);
+}
+
+.floatleft{
+    float: left;
+}
+.floatright{
+    float: right;
+}
+.clearfloat{
+    overflow: auto;
+}
+
+/* head */
+.header{
+    width: 100%;
+    height: 60px;
+    box-shadow: 0 1px 5px #888888;
+}
+.header #logo{
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 50px;
+}
+.header .menu  .a{
+    margin-left: 30px;
+    float: left;
+    display: block;
+    height: 16px;
+    line-height: 16px;
+    margin-top: 22px;
+    color: rgb(53, 92, 249);
+    font-size: 16px;
+}
+.header .menu #money{
+    height: 20px;
+    margin-top: 15px;
+    margin-left: 30px;
+}
+.header .menu #charge{
+    height: 26px;
+    width: 70px;
+    font-size: 14px;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+.header #address{
+    height: 26px;
+    width: 100px;
+    background-color: rgb(53, 92, 249);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 26px;
+    margin-right: 20px;
+    margin-top: 18px;
+    font-size: 12px;
+    color: white;
+    border-radius: 5px;
+}
+
+.body{
+    width: 100%;
+    height: 100%;
+}
+
+.body .container{
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.body #logain img{
+    margin-top: 50px;
+}
+.body #logain #connectButton{
+    position: relative;
+    top: 200px;
+    right: 300px;
+}
+
+
+.body #main{
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+}
+.body #my{
+    width: 100px;
+    height: 100px;
+    background-color: blue;
+    position: absolute;
+    z-index: 0;
+    
+}
+
+/* pool */
+.body #pool{
+    border: 3px solid red;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+.body .pool{
+    width: 200px;
+    height: 250px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 10px 20px;
+}
+.body .cj{
+    background-color: red;
+    width: 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 50%;
+    position: relative;
+    left: -150px;
+}
+.body .pool .logo{
+    height: 200px;
+    position: relative;
+}
+.body .pool .msg{
+    height: 50px;
+    position: relative;
+}
+.body .pool .msg div{
+    width: 100px;
+    margin-left: 50px;
+}
+.body .pool .logo img{
+    width: 150px;
+    position: absolute;
+    left: 25px;
+    bottom: 10px;
+}
+/* store */
+.body .store{
+    width: 200px;
+    height: 300px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 10px 20px;
+}
+.body .store .logo{
+    height: 200px;
+    position: relative;
+}
+.body .store .msg{
+    height: 100px;
+    position: relative;
+}
+.body .store .msg div{
+    width: 100px;
+    margin-left: 50px;
+}
+.body .store .logo img{
+    width: 150px;
+    position: absolute;
+    left: 25px;
+    bottom: 10px;
+}
+.body .store button{
+    position: absolute;
+    left: 50px;
+    bottom: 10px;
+}
+
+.body #main{
+    position: absolute;
+    left: 0;
+}
+.body #mystorage{
+    position: absolute;
+    left: -2000px;
+}
+
+.body #mystorage .balance,.stor{
+    margin: 30px 30px;
+}
+
+
+.body .mygoods{
+    width: 200px;
+    height: 330px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 10px 20px;
+}
+.body .mygoods .logo{
+    height: 200px;
+    position: relative;
+}
+.body .mygoods .msg{
+    height: 130px;
+    position: relative;
+}
+.body .mygoods .msg div{
+    width: 100px;
+    margin-left: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.body .mygoods .logo img{
+    width: 150px;
+    position: absolute;
+    left: 25px;
+    bottom: 10px;
+}
+.body .mygoods input{
+    width: 50px;
+    height: 30px;
+    position: relative;
+    top: 16px;
+    left: 10px;
+}
+.body .mygoods button{
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+}
