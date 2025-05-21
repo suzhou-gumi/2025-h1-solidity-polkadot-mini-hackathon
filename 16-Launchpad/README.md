@@ -4,7 +4,7 @@
 
 ## 项目演示
 
-项目演示视频：[LaunchpadDemo](https://www.bilibili.com/video/BV1bcJrzaE4B?vd_source=64cfd56c7b3c7cbf9a047c4aabad3dba)
+项目演示视频(快进无声版)：[LaunchpadDemo](https://www.bilibili.com/video/BV1bcJrzaE4B?vd_source=64cfd56c7b3c7cbf9a047c4aabad3dba)
 
 ## 已部署合约地址
 
