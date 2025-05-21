@@ -7,6 +7,11 @@
 - PlatformToken: `0xf3649AE6c937eB7348E12E41033A47C3d235Fe58`
 - Launchpad: `0xf13A80D9489BE734769389d98e9FaD8998A73510`
 
+## 测试账户信息
+
+- 地址: `0xc47c12A64c1fbA67CCaDBDC74906aF995d7b43EE`
+- 私钥: `2be7c402d4a3be09eed1828db5e78adfe542e4676de27b5a29231e5776245679`
+
 ## 项目结构
 
 - `contracts/`: 智能合约源代码
@@ -19,8 +24,8 @@
 
 1. 克隆项目
 ```bash
-git clone <项目地址>
-cd Launchpad
+git clone https://github.com/Genirsx/2025-h1-solidity-polkadot-mini-hackathon.git
+cd 16-Launchpad
 ```
 
 2. 安装依赖
@@ -115,11 +120,36 @@ cd frontend
 
 # 安装依赖
 npm install
-npm install --save-dev @types/react @types/react-dom
 
 # 启动开发服务器
 npm start
 ```
+
+## 功能验证
+
+所有功能已经过测试并确认可以正常运行：
+
+1. 合约部署
+   - PlatformToken 部署成功
+   - Launchpad 部署成功
+   - 合约地址已正确配置
+
+2. 脚本功能
+   - `PlatformTokenMint.ts`: 可以成功铸造平台代币
+   - `createProject.ts`: 可以成功创建新项目
+   - `subscribe.ts`: 可以成功参与项目认购
+   - `claim.ts`: 可以成功领取代币
+   - `finalize.ts`: 可以成功结束项目
+   - `listProjects.ts`: 可以正确显示项目列表
+   - `test.ts`: 完整功能测试通过
+   - `testSoftCap.ts`: 软顶功能测试通过
+
+3. 前端功能
+   - 项目列表显示正常
+   - 项目创建功能正常
+   - 认购功能正常
+   - 代币领取功能正常
+   - 项目状态更新正常
 
 ## 注意事项
 
