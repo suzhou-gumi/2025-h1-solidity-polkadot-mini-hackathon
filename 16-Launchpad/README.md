@@ -1,82 +1,26 @@
-# 16-Launchpad 区块链众筹平台
+# Launchpad 项目
 
-## 项目简介
-这是一个基于以太坊的众筹平台项目，为创新项目提供去中心化的融资解决方案。项目创建者可以发起众筹活动，投资者参与认购，并在项目结束后领取代币。
+这是一个基于 Hardhat 的 Launchpad 项目，用于创建和管理代币发行项目。
 
-## 项目特点
-- 去中心化：基于区块链技术，确保透明和公平
-- 安全可靠：采用成熟的智能合约标准
-- 用户友好：简洁直观的操作界面
-- 灵活配置：支持多种众筹参数设置
+## 已部署合约地址
 
-## 主要功能
-
-### 1. 项目创建
-- 项目创建者可以设置项目名称、代币符号、代币名称
-- 设置众筹代币数量、代币价格、硬顶金额
-- 设置众筹开始和结束时间
-- 自动创建项目代币合约
-
-### 2. 项目认购
-- 投资者可以使用 ETH 参与项目认购
-- 实时显示认购金额和剩余额度
-- 支持多个投资者同时参与
-- 自动计算可获得的代币数量
-
-### 3. 项目结束
-- 支持两种结束方式：
-  - 达到硬顶金额自动结束
-  - 项目创建者手动结束
-- 结束后的资金自动转入项目创建者账户
-
-### 4. 代币领取
-- 项目结束后，投资者可以领取认购的代币
-- 支持批量领取功能
-- 自动计算每个投资者的代币数量
-
-## 技术架构
-
-### 智能合约
-- 使用 Solidity 开发
-- 采用 OpenZeppelin 标准库
-- 实现了安全的代币合约
-- 支持代币铸造和转账
-
-### 前端界面
-- 使用 React 开发
-- 现代化的 UI 设计
-- 响应式布局
-- 实时数据更新
-
-### 安全性
-- 使用 Hardhat 进行合约测试
-- 实现了多重安全检查
-- 防止重入攻击
-- 安全的资金管理机制
+- PlatformToken: `0xf3649AE6c937eB7348E12E41033A47C3d235Fe58`
+- Launchpad: `0xf13A80D9489BE734769389d98e9FaD8998A73510`
 
 ## 项目结构
-```
-├── contracts/              # 智能合约目录
-│   ├── ProjectToken.sol    # 项目代币合约
-│   └── Launchpad.sol       # 众筹平台合约
-├── frontend/              # 前端代码目录
-│   ├── src/               # 源代码
-│   └── public/            # 静态资源
-├── scripts/               # 部署脚本
-└── test/                  # 测试文件
-```
 
-## 开发环境要求
-- Node.js >= 14.0.0
-- npm >= 6.0.0
-- MetaMask 或其他以太坊钱包
+- `contracts/`: 智能合约源代码
+- `scripts/`: 部署和测试脚本
+- `ignition/`: Ignition 部署模块
+- `test/`: 测试文件
+- `frontend/`: 前端应用
 
-## 安装和运行
+## 安装步骤
 
 1. 克隆项目
 ```bash
-git clone https://github.com/your-username/01-Launchpad.git
-cd 16-Launchpad
+git clone https://github.com/Genirsx/2025-h1-solidity-polkadot-mini-hackathon
+cd Launchpad
 ```
 
 2. 安装依赖
@@ -89,64 +33,87 @@ npm install
 npx hardhat compile
 ```
 
-4. 运行测试
-```bash
-npx hardhat test
+4. 创建环境变量文件
+   创建 `.env` 文件并添加以下内容：
+```
+WESTEND_HUB_PK="你的私钥"
 ```
 
-5. 启动前端
+## 部署步骤
+
+1. 部署 PlatformToken
 ```bash
-cd frontend
-npm install
-npm start
+npx hardhat ignition deploy ignition/modules/PlatformToken.ts
 ```
+
+2. 部署 Launchpad
+```bash
+npx hardhat ignition deploy ignition/modules/Launchpad.ts
+```
+
+## 脚本说明
+
+scripts 目录下的脚本功能说明：
+
+- `PlatformTokenMint.ts`: 用于铸造平台代币（需要修改合约地址）
+- `deploy.ts`: 部署合约并创建一个项目的脚本
+- `createProject.ts`: 创建新的募资项目
+- `subscribe.ts`: 参与项目认购
+- `claim.ts`: 领取项目代币或退款
+- `finalize.ts`: 结束项目
+- `listProjects.ts`: 列出所有项目
+- `test.ts`: 完整功能测试脚本
+- `testSoftCap.ts`: 测试软顶功能
 
 ## 使用说明
 
-1. 连接钱包
-   - 支持 MetaMask 等钱包
-   - 确保钱包连接到正确的网络
+1. 铸造平台代币
+   修改 `scripts/PlatformTokenMint.ts` 中的合约地址为：
+```
+const platformTokenAddress = "0xf3649AE6c937eB7348E12E41033A47C3d235Fe58";
+```
+然后运行：
+```bash
+npx hardhat run scripts/PlatformTokenMint.ts
+```
 
 2. 创建项目
-   - 填写项目信息
-   - 设置众筹参数
-   - 确认创建
+   修改 `scripts/createProject.ts` 中的 Launchpad 合约地址为：
+```
+const launchpadAddress = "0xf13A80D9489BE734769389d98e9FaD8998A73510";
+```
+然后运行：
+```bash
+npx hardhat run scripts/createProject.ts
+```
 
-3. 参与认购
-   - 选择要参与的项目
-   - 输入认购金额
-   - 确认交易
+3. 测试功能
+   完整测试：
+```bash
+npx hardhat run scripts/test.ts
+```
 
-4. 领取代币
-   - 等待项目结束
-   - 点击领取按钮
-   - 确认交易
+单步测试：
+```bash
+# 认购项目
+npx hardhat run scripts/subscribe.ts
+
+# 结束项目
+npx hardhat run scripts/finalize.ts
+
+# 领取代币
+npx hardhat run scripts/claim.ts
+
+# 查看项目列表
+npx hardhat run scripts/listProjects.ts
+```
 
 ## 注意事项
 
-1. 请确保使用正确的网络
-2. 交易前检查 Gas 费用
-3. 保管好私钥和助记词
-4. 仔细阅读项目信息
-
-## 贡献指南
-
-1. Fork 项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 提交 Pull Request
-
-## 联系方式
-
-- 项目维护者：[您的名字]
-- 邮箱：[您的邮箱]
-- GitHub：[您的GitHub主页]
+1. 确保在运行脚本前已经正确配置了 `.env` 文件
+2. 部署合约后需要更新相关脚本中的合约地址
+3. 测试脚本中的参数（如代币数量、时间等）可以根据需要修改
 
 ## 许可证
 
 MIT License
-
-## 致谢
-
-感谢所有为这个项目做出贡献的开发者。
