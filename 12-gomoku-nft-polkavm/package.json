@@ -1,0 +1,19 @@
+{
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.3.0",
+    "dotenv": "^16.5.0"
+  },
+  "name": "gomoku-nft-polkadot-hackathon",
+  "version": "1.0.0",
+  "description": "Gomoku NFT for Polkadot AssetHub hackathon",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "youlaiwuqu",
+  "license": "ISC"
+}
