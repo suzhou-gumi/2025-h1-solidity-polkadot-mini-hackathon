@@ -2,6 +2,10 @@
 
 这是一个基于 Hardhat 的 Launchpad 项目，用于创建和管理代币发行项目。
 
+## 项目演示
+
+项目演示视频：[LaunchpadDemo](https://www.bilibili.com/video/BV1bcJrzaE4B?vd_source=64cfd56c7b3c7cbf9a047c4aabad3dba)
+
 ## 已部署合约地址
 
 - PlatformToken: `0xf3649AE6c937eB7348E12E41033A47C3d235Fe58`
