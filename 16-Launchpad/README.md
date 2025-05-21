@@ -19,7 +19,7 @@
 
 1. 克隆项目
 ```bash
-git clone https://github.com/Genirsx/2025-h1-solidity-polkadot-mini-hackathon
+git clone <项目地址>
 cd Launchpad
 ```
 
@@ -106,6 +106,19 @@ npx hardhat run scripts/claim.ts
 
 # 查看项目列表
 npx hardhat run scripts/listProjects.ts
+```
+
+4. 启动前端项目
+```bash
+# 进入前端目录
+cd frontend
+
+# 安装依赖
+npm install
+npm install --save-dev @types/react @types/react-dom
+
+# 启动开发服务器
+npm start
 ```
 
 ## 注意事项
