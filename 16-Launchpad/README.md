@@ -1,6 +1,6 @@
 # Launchpad 项目
 
-这是一个基于 Hardhat 的 Launchpad 项目，用于创建和管理代币发行项目。
+这是一个基于 Hardhat 的 Launchpad 项目，用于创建和管理Token发行项目。
 
 ## 项目演示
 
