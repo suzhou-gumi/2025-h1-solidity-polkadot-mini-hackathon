@@ -20,6 +20,9 @@ importers:
       '@openzeppelin/contracts':
         specifier: ^5.3.0
         version: 5.3.0
+      dotenv:
+        specifier: 16.5.0
+        version: 16.5.0
       ethers:
         specifier: ^6.14.0
         version: 6.14.0
@@ -32,7 +35,7 @@ importers:
         version: 0.15.11(@nomicfoundation/hardhat-verify@2.0.13(hardhat@2.22.0(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))(typescript@5.8.3)))(hardhat@2.22.0(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))(typescript@5.8.3))
       '@nomicfoundation/hardhat-toolbox':
         specifier: ^5.0.0
-        version: 5.0.0(b52av4yr2l4auaq6mfypniy5ui)
+        version: 5.0.0(705be76fb5a52b2784e779a7260829ee)
       '@parity/hardhat-polkadot':
         specifier: ^0.1.4
         version: 0.1.4(@parity/hardhat-polkadot-node@0.1.1(hardhat@2.22.0(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))(typescript@5.8.3)))(@parity/hardhat-polkadot-resolc@0.1.2(hardhat@2.22.0(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))(typescript@5.8.3)))(hardhat@2.22.0(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))(typescript@5.8.3))
@@ -927,6 +930,10 @@ packages:
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
+
+  dotenv@16.5.0:
+    resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
+    engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -2632,7 +2639,7 @@ snapshots:
       ethereumjs-util: 7.1.5
       hardhat: 2.22.0(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))(typescript@5.8.3)
 
-  '@nomicfoundation/hardhat-toolbox@5.0.0(b52av4yr2l4auaq6mfypniy5ui)':
+  '@nomicfoundation/hardhat-toolbox@5.0.0(705be76fb5a52b2784e779a7260829ee)':
     dependencies:
       '@nomicfoundation/hardhat-chai-matchers': 2.0.8(@nomicfoundation/hardhat-ethers@3.0.8(ethers@6.14.0)(hardhat@2.22.0(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))(typescript@5.8.3)))(chai@4.5.0)(ethers@6.14.0)(hardhat@2.22.0(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))(typescript@5.8.3))
       '@nomicfoundation/hardhat-ethers': 3.0.8(ethers@6.14.0)(hardhat@2.22.0(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))(typescript@5.8.3))
@@ -3333,6 +3340,8 @@ snapshots:
   dir-glob@3.0.1:
     dependencies:
       path-type: 4.0.0
+
+  dotenv@16.5.0: {}
 
   dunder-proto@1.0.1:
     dependencies:

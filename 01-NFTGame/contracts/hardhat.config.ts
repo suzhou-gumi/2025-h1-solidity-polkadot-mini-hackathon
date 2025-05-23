@@ -4,7 +4,8 @@ import { HardhatUserConfig, vars } from 'hardhat/config';
 import '@nomicfoundation/hardhat-toolbox';
 // 导入Polkadot相关的hardhat插件
 import '@parity/hardhat-polkadot';
-
+import { config } from "dotenv"
+config()
 // 定义hardhat配置对象
 const config: HardhatUserConfig = {
     // 指定Solidity编译器版本
@@ -56,7 +57,7 @@ const config: HardhatUserConfig = {
             // Westend资产中心RPC节点URL
             url: 'https://westend-asset-hub-eth-rpc.polkadot.io',
             // 从环境变量获取账户私钥
-            accounts: [vars.get('WESTEND_HUB_PK')],
+            accounts: [process.env.WESTEND_HUB_PK],
         },
     }
 };

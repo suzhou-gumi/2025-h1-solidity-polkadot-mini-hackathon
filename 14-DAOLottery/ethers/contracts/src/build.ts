@@ -6,10 +6,14 @@ import path from "path";
 
 const buildDir = ".build";
 const contractsOutDir = path.join(buildDir, "contracts");
-rmSync(contractsOutDir, { recursive: true, force: true });
-mkdirSync(contractsOutDir, { recursive: true });
 
-const contracts = readdirSync(process.cwd()).filter((f) => f.endsWith(".sol"));
+console.log("Found contracts:", contractsOutDir);
+
+// rmSync(contractsOutDir, { recursive: true, force: true });
+// mkdirSync(contractsOutDir, { recursive: true });
+
+const contracts = readdirSync(contractsOutDir).filter((f) => f.endsWith(".sol"));
+console.log("Found contracts:", contracts);
 
 console.log("Compiling contracts...");
 
